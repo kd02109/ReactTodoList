@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import Skeleton from "./components/Skeleton";
 import styles from "./style/App.module.css";
 
 function App() {
@@ -55,7 +56,9 @@ function App() {
     reLocal(result);
   };
 
-  return loding ? null : (
+  return loding ? (
+    <Skeleton />
+  ) : (
     <div className={styles.app}>
       <div className={styles.doing}>
         <h1 className={styles.title}>할일</h1>
