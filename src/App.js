@@ -1,27 +1,33 @@
-import { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
+import { useState, useEffect, useContext, createContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "./components/Skeleton";
 import styles from "./style/App.module.css";
 
 function App() {
+  // imput
   const [toDo, setToDo] = useState("");
+  // todo 저장
   const [toDoList, setToDoList] = useState([]);
+  // loading 창
   const [loding, setLoding] = useState(true);
 
+  //로컬 스토리지 불러오기
   useEffect(() => {
     const localToDoList = localStorage.getItem("todo");
     if (localToDoList) {
       setToDoList(JSON.parse(localToDoList));
     }
+    //임으로 로딩시간 설정
     setTimeout(() => setLoding(false), 2000);
   }, []);
 
+  // 로컬 스토리지 자료 갱신
   const reLocal = (list) => {
     localStorage.setItem("todo", JSON.stringify(list));
   };
 
+  // TODOLIST 갱신
   const handleWrite = (event) => {
     event.preventDefault();
     if (toDo === "") {
@@ -36,8 +42,10 @@ function App() {
     reLocal(copyTodo);
   };
 
+  // input
   const handleTodo = (event) => setToDo(event.target.value);
 
+  // 완료 미정 교체
   const handleDone = (id) => {
     const newToDoList = [...toDoList];
     newToDoList.forEach((todo) => {
@@ -49,6 +57,7 @@ function App() {
     reLocal(newToDoList);
   };
 
+  // 삭제
   const handleToDoDelete = (id) => {
     const newToDoList = [...toDoList];
     const result = newToDoList.filter((todo) => todo.id !== id);
@@ -65,12 +74,13 @@ function App() {
         <ul className={styles.ul}>
           {toDoList.map((todo, index) =>
             todo.done === false ? (
-              <li
-                key={index}
-                onClick={() => handleDone(todo.id)}
-                className={styles.todolist}
-              >
-                <span>{todo.toDo}</span>
+              <li key={index} className={styles.todolist}>
+                <span
+                  className={styles.span}
+                  onClick={() => handleDone(todo.id)}
+                >
+                  {todo.toDo}
+                </span>
                 <FontAwesomeIcon
                   icon={faTrash}
                   onClick={() => handleToDoDelete(todo.id)}
@@ -85,12 +95,13 @@ function App() {
         <ul className={styles.ul}>
           {toDoList.map((todo, index) =>
             todo.done === true ? (
-              <li
-                key={index}
-                className={styles.todolist}
-                onClick={() => handleDone(todo.id)}
-              >
-                <span>{todo.toDo}</span>
+              <li key={index} className={styles.todolist}>
+                <span
+                  className={styles.sapn}
+                  onClick={() => handleDone(todo.id)}
+                >
+                  {todo.toDo}
+                </span>
                 <FontAwesomeIcon
                   icon={faTrash}
                   onClick={() => handleToDoDelete(todo.id)}
