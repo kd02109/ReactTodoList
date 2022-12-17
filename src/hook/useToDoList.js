@@ -23,7 +23,7 @@ const useToDoList = () => {
     setTodoList(newToDoList);
   };
 
-  return todoList, addTodoList, deleteTodoList, changeTodoList;
+  return { todoList, addTodoList, deleteTodoList, changeTodoList };
 };
 
 export default useToDoList;
